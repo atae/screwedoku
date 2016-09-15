@@ -10,13 +10,17 @@ class Board
   end
 
   def self.from_file(filename)
+
     rows = File.readlines(filename).map(&:chomp)
-    tiles = rows.map do |row|
+
+    @rows = rows.map do |row|
+
       nums = row.split("").map { |char| Integer(char) }
       nums.map { |num| Tile.new(num) }
     end
 
-    self.new(tiles)
+    # board.render
+    self.new(@rows)
   end
 
   def initialize(grid = self.empty_grid)
@@ -35,7 +39,7 @@ class Board
   end
 
   def columns
-    rows.transpose
+    @grid.transpose
   end
 
   def render
@@ -53,7 +57,7 @@ class Board
   alias_method :rows, :size
 
   def solved?
-    rows.all? { |row| solved_set?(row) } &&
+    @grid.all? { |row| solved_set?(row) } &&
       columns.all? { |col| solved_set?(col) } &&
       squares.all? { |square| solved_set?(square) }
   end
